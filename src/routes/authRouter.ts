@@ -10,7 +10,14 @@ router.post(
   body('remember_me').isBoolean(),
   authController.login
 )
-router.post('/register', authController.register)
+router.post(
+  '/register',
+  body('avatar').isLength({ min: 1 }),
+  body('full_name').isLength({ min: 5 }),
+  body('email').isEmail(),
+  body('password').isLength({ min: 8 }),
+  authController.register
+)
 router.get('/logout', authController.logout)
 
 export default router

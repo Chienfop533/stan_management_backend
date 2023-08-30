@@ -1,8 +1,9 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
-import { authRouter } from './routes'
-
 dotenv.config()
+import { authRouter } from './routes'
+import connect from './db/db'
+
 const app = express()
 const port = process.env.PORT ?? 3000
 app.use(express.json())
@@ -14,5 +15,6 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, async () => {
+  await connect()
   console.log(`Listening on port: ${port}`)
 })

@@ -19,8 +19,9 @@ const corsOptions = {
 app.use(express.json())
 app.use(cors(corsOptions))
 app.use(cookieParser(process.env.COOKIE_SECRET as string))
+//Middleware
 app.use(checkToken)
-
+//Route
 app.use('/auth', authRouter)
 
 app.get('/', (req, res) => {

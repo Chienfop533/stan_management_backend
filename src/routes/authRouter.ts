@@ -18,6 +18,8 @@ router.post(
   body('password').isLength({ min: 8 }),
   authController.register
 )
-router.get('/logout', authController.logout)
+router.delete('/logout', authController.logout)
+router.post('/refreshToken', authController.refreshToken)
+router.post('/verifyToken', authController.verifyToken)
 
 export default router

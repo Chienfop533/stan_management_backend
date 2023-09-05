@@ -1,15 +1,13 @@
 import bcrypt from 'bcrypt'
 import { UserModel } from '@/models'
 import { LoginReq, RegisterReq } from '@/types/authType'
-import jwt, { Secret } from 'jsonwebtoken'
 
 const login = async ({ email, password, remember_me }: LoginReq) => {
   const existingUser = await UserModel.findOne({ email }).exec()
   if (existingUser) {
     const isMatch = await bcrypt.compare(password, existingUser.password)
     if (isMatch) {
-      const accessToken = jwt.sign({ data: existingUser }, process.env.JWT_SECRET as Secret, { expiresIn: '30 days' })
-      return { ...existingUser.toObject(), password: 'hide', accessToken: accessToken }
+      return { ...existingUser.toObject() }
     } else {
       throw new Error('Wrong email or password')
     }

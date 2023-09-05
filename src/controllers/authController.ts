@@ -2,6 +2,13 @@ import { authService } from '@/services'
 import { LoginReq, RegisterReq } from '@/types/authType'
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
+import {
+  attachCookiesToResponse,
+  createAccessToken,
+  createRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken
+} from '@/utils/jwt'
 
 const login = async (req: Request, res: Response) => {
   const errors = validationResult(req)
@@ -11,7 +18,15 @@ const login = async (req: Request, res: Response) => {
   const { email, password, remember_me } = req.body as LoginReq
   try {
     const existingUser = await authService.login({ email, password, remember_me })
-    res.status(200).json({ success: true, message: 'Login successfully', data: existingUser })
+    const accessToken = createAccessToken(existingUser)
+    const refreshToken = createRefreshToken(existingUser)
+    attachCookiesToResponse({ res, refreshToken, remember_me })
+    res.status(200).json({
+      success: true,
+      message: 'Login successfully',
+      data: { ...existingUser, password: 'hide' },
+      accessToken: accessToken
+    })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })
   }
@@ -31,7 +46,32 @@ const register = async (req: Request, res: Response) => {
   }
 }
 const logout = async (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Logout successfully' })
+  res.clearCookie('refreshToken')
+  res.status(200).json({ success: true, message: 'Logout successfully' })
+}
+const refreshToken = async (req: Request, res: Response) => {
+  const cookies = req.signedCookies
+  if (!cookies?.refreshToken) return res.status(401).json({ success: false, message: 'Unauthorized' })
+  try {
+    const jwtObject: any = verifyRefreshToken(cookies?.refreshToken as string)
+    const accessToken = createAccessToken(jwtObject.data)
+    res.status(200).json({ success: true, message: 'Refresh token successfully', accessToken: accessToken })
+  } catch (error: any) {
+    res.status(401).json({ success: false, message: error.message })
+  }
+}
+const verifyToken = async (req: Request, res: Response) => {
+  const accessToken = req.headers?.authorization?.split(' ')[1]
+  try {
+    const jwtObject: any = verifyAccessToken(accessToken as string)
+    res.status(200).json({
+      success: true,
+      message: 'Verify access token successfully',
+      data: { ...jwtObject.data, password: 'hide' }
+    })
+  } catch (error: any) {
+    res.status(401).json({ success: false, message: error.message })
+  }
 }
 
-export default { login, register, logout }
+export default { login, register, logout, refreshToken, verifyToken }

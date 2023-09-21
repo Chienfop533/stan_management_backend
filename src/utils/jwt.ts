@@ -3,7 +3,7 @@ import jwt, { Secret } from 'jsonwebtoken'
 
 const createAccessToken = (user: any) => {
   return jwt.sign({ data: user }, process.env.ACCESS_TOKEN_SECRET as Secret, {
-    expiresIn: '10m'
+    expiresIn: '30m'
   })
 }
 

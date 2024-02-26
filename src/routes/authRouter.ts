@@ -7,13 +7,13 @@ router.post(
   '/login',
   body('email').isEmail(),
   body('password').isLength({ min: 8 }),
-  body('remember_me').isBoolean(),
+  body('rememberMe').isBoolean(),
   authController.login
 )
 router.post(
   '/register',
   body('avatar').isLength({ min: 1 }),
-  body('full_name').isLength({ min: 5 }),
+  body('fullName').isLength({ min: 5 }),
   body('email').isEmail(),
   body('password').isLength({ min: 8 }),
   authController.register

@@ -15,12 +15,12 @@ const login = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-  const { email, password, remember_me } = req.body as LoginReq
+  const { email, password, rememberMe } = req.body as LoginReq
   try {
-    const existingUser = await authService.login({ email, password, remember_me })
+    const existingUser = await authService.login({ email, password, rememberMe })
     const accessToken = createAccessToken(existingUser)
     const refreshToken = createRefreshToken(existingUser)
-    attachCookiesToResponse({ res, refreshToken, remember_me })
+    attachCookiesToResponse({ res, refreshToken, rememberMe })
     res.status(200).json({
       success: true,
       message: 'Login successfully',
@@ -37,9 +37,9 @@ const register = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-  const { avatar, full_name, email, password } = req.body as RegisterReq
+  const { avatar, fullName, email, password } = req.body as RegisterReq
   try {
-    const user = await authService.register({ avatar, full_name, email, password })
+    const user = await authService.register({ avatar, fullName, email, password })
     res.status(201).json({ success: true, message: 'Register successfully', data: user })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })

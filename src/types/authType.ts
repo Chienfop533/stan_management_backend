@@ -1,11 +1,11 @@
 export interface LoginReq {
   email: string
   password: string
-  remember_me: boolean
+  rememberMe: boolean
 }
 export interface RegisterReq {
   avatar: string
-  full_name: string
+  fullName: string
   email: string
   password: string
 }

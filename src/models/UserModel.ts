@@ -6,7 +6,7 @@ export default mongoose.model(
   new Schema(
     {
       avatar: { type: String, required: true },
-      full_name: { type: String, required: true, minlength: [5, 'Full name must be at least 5 characters'] },
+      fullName: { type: String, required: true, minlength: [5, 'Full name must be at least 5 characters'] },
       email: {
         type: String,
         required: true,

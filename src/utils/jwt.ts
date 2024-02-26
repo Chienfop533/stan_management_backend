@@ -21,13 +21,13 @@ const verifyRefreshToken = (refreshToken: string) => {
 const attachCookiesToResponse = ({
   res,
   refreshToken,
-  remember_me
+  rememberMe
 }: {
   res: Response
   refreshToken: string
-  remember_me: boolean
+  rememberMe: boolean
 }) => {
-  if (remember_me) {
+  if (rememberMe) {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

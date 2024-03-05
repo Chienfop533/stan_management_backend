@@ -50,10 +50,10 @@ const logout = async (req: Request, res: Response) => {
   res.status(200).json({ success: true, message: 'Logout successfully' })
 }
 const refreshToken = async (req: Request, res: Response) => {
-  const cookies = req.signedCookies
-  if (!cookies?.refreshToken) return res.status(401).json({ success: false, message: 'Unauthorized' })
+  const refreshToken = req.signedCookies['refresh_token']
+  if (!refreshToken) return res.status(401).json({ success: false, message: 'Unauthorized' })
   try {
-    const jwtObject: any = verifyRefreshToken(cookies?.refreshToken as string)
+    const jwtObject: any = verifyRefreshToken(refreshToken as string)
     const accessToken = createAccessToken(jwtObject.data)
     res.status(200).json({ success: true, message: 'Refresh token successfully', accessToken: accessToken })
   } catch (error: any) {

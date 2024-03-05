@@ -46,7 +46,7 @@ const register = async (req: Request, res: Response) => {
   }
 }
 const logout = async (req: Request, res: Response) => {
-  res.clearCookie('refreshToken')
+  res.clearCookie('refresh_token')
   res.status(200).json({ success: true, message: 'Logout successfully' })
 }
 const refreshToken = async (req: Request, res: Response) => {

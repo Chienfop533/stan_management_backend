@@ -19,7 +19,7 @@ router.post(
   authController.register
 )
 router.delete('/logout', authController.logout)
-router.post('/refreshToken', authController.refreshToken)
-router.post('/verifyToken', authController.verifyToken)
+router.post('/refresh-token', authController.refreshToken)
+router.post('/verify-token', authController.verifyToken)
 
 export default router

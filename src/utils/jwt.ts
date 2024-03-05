@@ -3,7 +3,7 @@ import jwt, { Secret } from 'jsonwebtoken'
 
 const createAccessToken = (user: any) => {
   return jwt.sign({ data: user }, process.env.ACCESS_TOKEN_SECRET as Secret, {
-    expiresIn: '30m'
+    expiresIn: '120m'
   })
 }
 
@@ -28,14 +28,14 @@ const attachCookiesToResponse = ({
   rememberMe: boolean
 }) => {
   if (rememberMe) {
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 1000 * 60 * 60 * 24 * 60
     })
   } else {
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       signed: true

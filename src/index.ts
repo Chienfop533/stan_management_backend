@@ -7,6 +7,8 @@ import { authRouter } from './routes'
 import connect from './db/db'
 import checkToken from './middleware/authentication'
 import cors from 'cors'
+import { Strategy } from 'passport-google-oauth20'
+import passport from 'passport'
 
 const app = express()
 const port = process.env.PORT ?? 8000
@@ -23,6 +25,26 @@ app.use(cookieParser(process.env.COOKIE_SECRET as string))
 app.use(checkToken)
 //Route
 app.use('/auth', authRouter)
+//Passport google
+passport.use(
+  new Strategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      callbackURL: 'http://localhost:4000/auth/google/callback'
+    },
+    (accessToken) => {
+      console.log(accessToken)
+    }
+  )
+)
+app.get(
+  '/auth/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+)
+app.get('/auth/google/callback', passport.authenticate('google'))
 
 app.get('/', (req, res) => {
   res.send('Stan Management backend!')

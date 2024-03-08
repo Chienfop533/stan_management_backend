@@ -1,9 +1,16 @@
 import { Request, NextFunction, Response } from 'express'
 import { verifyAccessToken } from '@/utils/jwt'
 
-const listUrlNotAuth = ['/auth/login', '/auth/register', '/auth/refresh-token', '/auth/logout', '/auth/google']
+const listUrlNotAuth = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/refresh-token',
+  '/auth/logout',
+  '/auth/google',
+  '/auth/google/callback'
+]
 export default function checkToken(req: Request, res: Response, next: NextFunction) {
-  if (listUrlNotAuth.some((url) => url.toLocaleLowerCase().trim() == req.url.toLocaleLowerCase().trim())) {
+  if (listUrlNotAuth.some((url) => req.url.toLocaleLowerCase().trim().indexOf(url.toLocaleLowerCase().trim()) != -1)) {
     next()
     return
   }

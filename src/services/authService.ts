@@ -5,7 +5,7 @@ import { LoginReq, RegisterReq } from '@/types/authType'
 const login = async ({ email, password, rememberMe }: LoginReq) => {
   const existingUser = await UserModel.findOne({ email }).exec()
   if (existingUser) {
-    const isMatch = await bcrypt.compare(password, existingUser.password)
+    const isMatch = await bcrypt.compare(password, existingUser.password as string)
     if (isMatch) {
       return { ...existingUser.toObject() }
     } else {

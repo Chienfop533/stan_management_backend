@@ -13,7 +13,8 @@ export default mongoose.model(
         unique: true,
         validate: { validator: (value: string) => validator.isEmail(value), message: 'Email is incorrect format' }
       },
-      password: { type: String, required: true }
+      password: String,
+      googleId: String
     },
     { timestamps: true }
   )

@@ -1,2 +1,3 @@
 import authController from './authController'
-export { authController }
+import authGoogle from './authGoogle'
+export { authController, authGoogle }

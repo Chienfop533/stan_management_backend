@@ -51,7 +51,10 @@ const logout = async (req: Request, res: Response) => {
 }
 const refreshToken = async (req: Request, res: Response) => {
   const refreshToken = req.signedCookies['refresh_token']
-  if (!refreshToken) return res.status(401).json({ success: false, message: 'Unauthorized' })
+  if (!refreshToken) {
+    res.clearCookie('refresh_token')
+    return res.status(401).json({ success: false, message: 'Unauthorized' })
+  }
   try {
     const jwtObject: any = verifyRefreshToken(refreshToken as string)
     const accessToken = createAccessToken(jwtObject.data)

@@ -15,7 +15,7 @@ import authGoogle from './controllers/authGoogle'
 const app = express()
 const port = process.env.PORT ?? 8000
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.CLIENT_URL,
   credentials: true,
   optionsSuccessStatus: 200
 }
@@ -63,14 +63,16 @@ passport.deserializeUser((user: any, done) => {
 app.get(
   '/auth/google',
   passport.authenticate('google', {
-    scope: ['profile', 'email']
+    scope: ['profile', 'email'],
+    accessType: 'offline',
+    prompt: 'consent'
   })
 )
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000/',
-    failureRedirect: 'http://localhost:3000/login'
+    successRedirect: `${process.env.CLIENT_URL}/login-success`,
+    failureRedirect: `${process.env.CLIENT_URL}/login`
   })
 )
 

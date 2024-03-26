@@ -10,7 +10,7 @@ import checkToken from './middleware/authentication'
 import cors from 'cors'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import passport from 'passport'
-import authGoogle from './controllers/authGoogle'
+import authPassport from './controllers/authPassport'
 
 const app = express()
 const port = process.env.PORT ?? 8000
@@ -49,7 +49,7 @@ passport.use(
       scope: ['profile', 'email'],
       state: true
     },
-    authGoogle.verifyGoogle
+    authPassport.verifyGoogle
   )
 )
 passport.serializeUser((user, done) => {
@@ -71,10 +71,13 @@ app.get(
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: `${process.env.CLIENT_URL}/login-success`,
+    successRedirect: `${process.env.CLIENT_URL}/login/success`,
     failureRedirect: `${process.env.CLIENT_URL}/login`
   })
 )
+app.get('/login/success', async (res, req: any) => {
+  console.log(req.user)
+})
 
 app.get('/', (req, res) => {
   res.send('Stan Management backend!')

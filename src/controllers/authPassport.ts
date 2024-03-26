@@ -13,7 +13,6 @@ const verifyGoogle = async (accessToken: string, refreshToken: string, profile: 
         email: (profile.emails as any)[0].value,
         googleId: profile.id
       })
-      console.log(newUser)
     }
     return cb(null, profile)
   } catch (error: any) {

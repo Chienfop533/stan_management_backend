@@ -1,3 +1,3 @@
 import authController from './authController'
-import authGoogle from './authGoogle'
-export { authController, authGoogle }
+import authPassport from './authPassport'
+export { authController, authPassport }

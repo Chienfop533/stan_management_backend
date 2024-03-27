@@ -1,2 +1,3 @@
 import authRouter from './authRouter'
-export { authRouter }
+import scrumboardRouter from './scrumboardRouter'
+export { authRouter, scrumboardRouter }

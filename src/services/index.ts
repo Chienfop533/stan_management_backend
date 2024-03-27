@@ -1,2 +1,3 @@
 import authService from './authService'
-export { authService }
+import scrumboardService from './scrumboardService'
+export { authService, scrumboardService }

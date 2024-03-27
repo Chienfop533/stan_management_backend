@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { UserModel } from '@/models'
 import { LoginReq, RegisterReq } from '@/types/authType'
+import { Profile } from 'passport'
 
 const login = async ({ email, password, rememberMe }: LoginReq) => {
   const existingUser = await UserModel.findOne({ email }).exec()
@@ -24,5 +25,19 @@ const register = async ({ avatar, fullName, email, password }: RegisterReq) => {
   const newUser = await UserModel.create({ avatar, fullName, email, password: hashPassword })
   return { ...newUser.toObject(), password: 'hide' }
 }
+const createUserPassport = async (profile: Profile) => {
+  const existingUser = await UserModel.findOne({ googleId: profile.id }).exec()
+  if (existingUser) {
+    return existingUser
+  } else {
+    const newUser = await UserModel.create({
+      avatar: (profile.photos as any)[0].value,
+      fullName: profile.displayName,
+      email: (profile.emails as any)[0].value,
+      googleId: profile.id
+    })
+    return newUser
+  }
+}
 
-export default { login, register }
+export default { login, register, createUserPassport }

@@ -8,9 +8,8 @@ import { authRouter } from './routes'
 import connect from './db/db'
 import checkToken from './middleware/authentication'
 import cors from 'cors'
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import passport from 'passport'
-import authPassport from './controllers/authPassport'
+import '@/config/passport'
 
 const app = express()
 const port = process.env.PORT ?? 8000
@@ -35,49 +34,11 @@ app.use(
 //Setup passport
 app.use(passport.initialize())
 app.use(passport.session())
+
 //Middleware
 app.use(checkToken)
 //Route
 app.use('/auth', authRouter)
-//Passport google
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      callbackURL: '/auth/google/callback',
-      scope: ['profile', 'email'],
-      state: true
-    },
-    authPassport.verifyGoogle
-  )
-)
-passport.serializeUser((user, done) => {
-  done(null, user)
-})
-
-passport.deserializeUser((user: any, done) => {
-  done(null, user)
-})
-
-app.get(
-  '/auth/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-    accessType: 'offline',
-    prompt: 'consent'
-  })
-)
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    successRedirect: `${process.env.CLIENT_URL}/login/success`,
-    failureRedirect: `${process.env.CLIENT_URL}/login`
-  })
-)
-app.get('/login/success', async (res, req: any) => {
-  console.log(req.user)
-})
 
 app.get('/', (req, res) => {
   res.send('Stan Management backend!')

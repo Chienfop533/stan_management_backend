@@ -7,8 +7,7 @@ const listUrlNotAuth = [
   '/auth/refresh-token',
   '/auth/logout',
   '/auth/google',
-  '/auth/google/callback',
-  '/login/success'
+  '/auth/google/callback'
 ]
 export default function checkToken(req: Request, res: Response, next: NextFunction) {
   if (listUrlNotAuth.some((url) => req.url.toLocaleLowerCase().trim().indexOf(url.toLocaleLowerCase().trim()) != -1)) {

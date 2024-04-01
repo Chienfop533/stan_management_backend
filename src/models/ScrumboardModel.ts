@@ -9,7 +9,11 @@ export default mongoose.model(
       description: String,
       startDate: Date,
       dueDate: Date,
-      status: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ['init', 'active', 'complete', 'late', 'pause'],
+        required: true
+      },
       type: {
         type: String,
         enum: ['public', 'private'],

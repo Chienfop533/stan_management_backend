@@ -9,6 +9,17 @@ router.post(
   body('title').isLength({ min: 1 }),
   body('startDate').isLength({ min: 1 }),
   body('type').isIn(['public', 'private']),
-  scrumboardController.createNewScrumboard
+  scrumboardController.createScrumboard
 )
+router.post(
+  '/update/:id',
+  body('id').isLength({ min: 1 }),
+  body('image').isLength({ min: 1 }),
+  body('title').isLength({ min: 1 }),
+  body('startDate').isLength({ min: 1 }),
+  body('status').isIn(['init', 'complete', 'late', 'pause', 'active']),
+  body('type').isIn(['public', 'private']),
+  scrumboardController.updateScrumboard
+)
+router.post('/delete/:id', scrumboardController.deleteScrumboard)
 export default router

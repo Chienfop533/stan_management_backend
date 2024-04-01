@@ -33,7 +33,11 @@ const updateScrumboard = async (req: Request, res: Response) => {
     }
 
     const scrumboard = await scrumboardService.updateScrumboard(scrumboardId, scrumboardReq)
-    res.status(201).json({ success: true, message: 'Create new scrumboard successfully', data: scrumboard })
+    if (scrumboard) {
+      res.status(200).json({ success: true, message: 'Update scrumboard successfully', data: scrumboard })
+    } else {
+      res.status(400).json({ success: false, message: 'ScrumboardId not match' })
+    }
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })
   }

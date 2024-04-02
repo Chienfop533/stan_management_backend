@@ -1,5 +1,5 @@
 export interface ScrumboardTypeReq {
-  id?: string
+  _id?: string
   image: string
   title: string
   description?: string

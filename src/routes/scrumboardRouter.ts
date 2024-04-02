@@ -14,7 +14,7 @@ router.post(
 )
 router.post(
   '/update/:id',
-  body('id').isLength({ min: 1 }),
+  body('_id').isLength({ min: 1 }),
   body('image').isLength({ min: 1 }),
   body('title').isLength({ min: 1 }),
   body('startDate').isLength({ min: 1 }),

@@ -2,9 +2,16 @@ import { validationResult } from 'express-validator'
 import { Request, Response } from 'express'
 import { scrumboardService } from '@/services'
 import { ScrumboardTypeReq } from '@/types/scrumboardType'
-import moment from 'moment'
 import { checkStatusByDate } from '@/utils/checkStatus'
-import { error } from 'console'
+
+const getAllScrumboard = async (req: Request, res: Response) => {
+  try {
+    const listScrumboard = await scrumboardService.getAllScrumboard()
+    res.status(201).json({ success: true, message: 'Get all scrumboard successfully', data: listScrumboard })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
 const createScrumboard = async (req: Request, res: Response) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -55,4 +62,4 @@ const deleteScrumboard = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
-export default { createScrumboard, deleteScrumboard, updateScrumboard }
+export default { createScrumboard, deleteScrumboard, updateScrumboard, getAllScrumboard }

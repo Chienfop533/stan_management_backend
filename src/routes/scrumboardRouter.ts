@@ -3,6 +3,7 @@ import express from 'express'
 import { body } from 'express-validator'
 
 const router = express.Router()
+router.get('/list', scrumboardController.getAllScrumboard)
 router.post(
   '/create',
   body('image').isLength({ min: 1 }),
@@ -21,5 +22,5 @@ router.post(
   body('type').isIn(['public', 'private']),
   scrumboardController.updateScrumboard
 )
-router.post('/delete/:id', scrumboardController.deleteScrumboard)
+router.delete('/delete/:id', scrumboardController.deleteScrumboard)
 export default router

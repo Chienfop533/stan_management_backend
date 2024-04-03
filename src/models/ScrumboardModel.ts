@@ -21,7 +21,7 @@ export default mongoose.model(
       },
       listOrderIds: [
         {
-          type: String
+          type: Schema.Types.ObjectId
         }
       ],
       list: [
@@ -30,7 +30,7 @@ export default mongoose.model(
           title: { type: String, required: true },
           cardOrderIds: [
             {
-              type: String
+              type: Schema.Types.ObjectId
             }
           ]
         }

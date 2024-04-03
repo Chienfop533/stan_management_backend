@@ -92,4 +92,56 @@ const deleteScrumboard = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
-export default { createScrumboard, deleteScrumboard, updateScrumboard, getAllScrumboard }
+const addScrumboardList = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  try {
+    const scrumboardReq = req.body
+    const scrumboardId = req.params.id
+    const scrumboard = await scrumboardService.addScrumboardList(scrumboardId, scrumboardReq)
+    res.status(201).json({ success: true, message: 'Create new scrumboard list successfully', data: scrumboard })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
+const updateScrumboardList = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  try {
+    const scrumboardReq = req.body
+    const scrumboardId = req.params.id
+    const listId = req.params.listId
+    const scrumboard = await scrumboardService.updateScrumboardList(scrumboardId, listId, scrumboardReq)
+    res.status(201).json({ success: true, message: 'Update scrumboard list successfully', data: scrumboard })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
+const deleteScrumboardList = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  try {
+    const scrumboardId = req.params.id
+    const listId = req.params.listId
+    const scrumboard = await scrumboardService.deleteScrumboardList(scrumboardId, listId)
+    res.status(201).json({ success: true, message: 'Delete scrumboard list successfully', data: scrumboard })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
+
+export default {
+  createScrumboard,
+  deleteScrumboard,
+  updateScrumboard,
+  getAllScrumboard,
+  addScrumboardList,
+  updateScrumboardList,
+  deleteScrumboardList
+}

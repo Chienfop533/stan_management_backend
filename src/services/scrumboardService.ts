@@ -1,5 +1,6 @@
 import ScrumboardModel from '@/models/ScrumboardModel'
 import { ScrumboardTypeReq } from '@/types/scrumboardType'
+import mongoose from 'mongoose'
 
 const getAllScrumboard = async () => {
   const listScrumboard = await ScrumboardModel.find()
@@ -13,6 +14,7 @@ const createScrumboard = async (scrumboard: ScrumboardTypeReq) => {
   const newScrumboard = await ScrumboardModel.create({ ...scrumboard, listOrderIds: [], list: [] })
   return newScrumboard
 }
+
 const updateScrumboard = async (id: string, scrumboard: ScrumboardTypeReq) => {
   const updatedScrumboard = await ScrumboardModel.findByIdAndUpdate(id, scrumboard, { new: true })
   return updatedScrumboard
@@ -21,4 +23,46 @@ const deleteScrumboard = async (id: string) => {
   const scrumboard = await ScrumboardModel.findByIdAndDelete(id)
   return scrumboard
 }
-export default { createScrumboard, deleteScrumboard, updateScrumboard, getAllScrumboard, getScrumboardFilter }
+
+const addScrumboardList = async (scrumboardId: string, scrumboardList: { title: string }) => {
+  const newObjectId = new mongoose.Types.ObjectId()
+  const newScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    {
+      $push: {
+        listOrderIds: newObjectId,
+        list: { _id: newObjectId, title: scrumboardList.title, cardOrderIds: [] }
+      }
+    },
+    {
+      new: true
+    }
+  )
+  return newScrumboardList
+}
+const updateScrumboardList = async (scrumboardId: string, listId: string, scrumboardList: { title: string }) => {
+  const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    { $set: { 'list.$[element].title': scrumboardList.title } },
+    { new: true, arrayFilters: [{ 'element._id': listId }] }
+  )
+  return updatedScrumboardList
+}
+const deleteScrumboardList = async (scrumboardId: string, listId: string) => {
+  const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    { $pull: { listOrderIds: listId, list: { _id: listId } } },
+    { new: true }
+  )
+  return updatedScrumboardList
+}
+export default {
+  createScrumboard,
+  deleteScrumboard,
+  updateScrumboard,
+  getAllScrumboard,
+  getScrumboardFilter,
+  addScrumboardList,
+  updateScrumboardList,
+  deleteScrumboardList
+}

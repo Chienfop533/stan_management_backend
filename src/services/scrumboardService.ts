@@ -56,6 +56,14 @@ const deleteScrumboardList = async (scrumboardId: string, listId: string) => {
   )
   return updatedScrumboardList
 }
+const updateScrumboardListOrder = async (scrumboardId: string, scrumboardList: { listOrderIds: string[] }) => {
+  const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    { $set: { listOrderIds: scrumboardList.listOrderIds } },
+    { new: true }
+  )
+  return updatedScrumboardList
+}
 export default {
   createScrumboard,
   deleteScrumboard,
@@ -64,5 +72,6 @@ export default {
   getScrumboardFilter,
   addScrumboardList,
   updateScrumboardList,
-  deleteScrumboardList
+  deleteScrumboardList,
+  updateScrumboardListOrder
 }

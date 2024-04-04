@@ -12,7 +12,7 @@ router.post(
   body('type').isIn(['public', 'private']),
   scrumboardController.createScrumboard
 )
-router.post(
+router.put(
   '/:id/update',
   body('_id').isLength({ min: 1 }),
   body('image').isLength({ min: 1 }),
@@ -22,8 +22,14 @@ router.post(
   body('type').isIn(['public', 'private']),
   scrumboardController.updateScrumboard
 )
+router.put(
+  '/:id/update-list-order',
+  body('listOrderIds').isLength({ min: 2 }),
+  scrumboardController.updateScrumboardListOrder
+)
 router.delete('/:id/delete', scrumboardController.deleteScrumboard)
 router.post('/:id/add-list', body('title').isLength({ min: 1 }), scrumboardController.addScrumboardList)
-router.post('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)
+router.put('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)
 router.delete('/:id/delete-list/:listId', scrumboardController.deleteScrumboardList)
+
 export default router

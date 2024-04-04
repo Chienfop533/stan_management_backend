@@ -116,7 +116,7 @@ const updateScrumboardList = async (req: Request, res: Response) => {
     const scrumboardId = req.params.id
     const listId = req.params.listId
     const scrumboard = await scrumboardService.updateScrumboardList(scrumboardId, listId, scrumboardReq)
-    res.status(201).json({ success: true, message: 'Update scrumboard list successfully', data: scrumboard })
+    res.status(200).json({ success: true, message: 'Update scrumboard list successfully', data: scrumboard })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })
   }
@@ -130,7 +130,21 @@ const deleteScrumboardList = async (req: Request, res: Response) => {
     const scrumboardId = req.params.id
     const listId = req.params.listId
     const scrumboard = await scrumboardService.deleteScrumboardList(scrumboardId, listId)
-    res.status(201).json({ success: true, message: 'Delete scrumboard list successfully', data: scrumboard })
+    res.status(200).json({ success: true, message: 'Delete scrumboard list successfully', data: scrumboard })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
+const updateScrumboardListOrder = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  try {
+    const scrumboardReq = req.body
+    const scrumboardId = req.params.id
+    const scrumboard = await scrumboardService.updateScrumboardListOrder(scrumboardId, scrumboardReq)
+    res.status(200).json({ success: true, message: 'Update list order successfully', data: scrumboard })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })
   }
@@ -143,5 +157,6 @@ export default {
   getAllScrumboard,
   addScrumboardList,
   updateScrumboardList,
-  deleteScrumboardList
+  deleteScrumboardList,
+  updateScrumboardListOrder
 }

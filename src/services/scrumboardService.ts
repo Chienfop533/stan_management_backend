@@ -6,6 +6,10 @@ const getAllScrumboard = async () => {
   const listScrumboard = await ScrumboardModel.find()
   return listScrumboard
 }
+const getScrumboardById = async (id: string) => {
+  const scrumboardDetail = await ScrumboardModel.findById(id)
+  return scrumboardDetail
+}
 const getScrumboardFilter = async (filter: any) => {
   const listScrumboard = await ScrumboardModel.find(filter)
   return listScrumboard
@@ -73,5 +77,6 @@ export default {
   addScrumboardList,
   updateScrumboardList,
   deleteScrumboardList,
-  updateScrumboardListOrder
+  updateScrumboardListOrder,
+  getScrumboardById
 }

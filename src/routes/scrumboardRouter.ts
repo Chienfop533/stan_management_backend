@@ -4,6 +4,7 @@ import { body } from 'express-validator'
 
 const router = express.Router()
 router.get('/list', scrumboardController.getAllScrumboard)
+router.get('/:id/detail', scrumboardController.getScrumboardById)
 router.post(
   '/create',
   body('image').isLength({ min: 1 }),

@@ -15,7 +15,7 @@ const getAllScrumboard = async (req: Request, res: Response) => {
     }
     attachStatusCheckCookies({ res, isCheckedDate: true })
     const listScrumboard = await scrumboardService.getAllScrumboard()
-    res.status(201).json({ success: true, message: 'Get all scrumboard successfully', data: listScrumboard })
+    res.status(200).json({ success: true, message: 'Get all scrumboard successfully', data: listScrumboard })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })
   }
@@ -40,6 +40,15 @@ const updateStatusScrumboards = async (req: Request, res: Response) => {
     return listFilterToUpdate
   } else {
     return []
+  }
+}
+const getScrumboardById = async (req: Request, res: Response) => {
+  try {
+    const scrumboardId = req.params.id
+    const scrumboardDetail = await scrumboardService.getScrumboardById(scrumboardId)
+    res.status(200).json({ success: true, message: 'Get scrumboard detail successfully', data: scrumboardDetail })
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
   }
 }
 const createScrumboard = async (req: Request, res: Response) => {
@@ -158,5 +167,6 @@ export default {
   addScrumboardList,
   updateScrumboardList,
   deleteScrumboardList,
-  updateScrumboardListOrder
+  updateScrumboardListOrder,
+  getScrumboardById
 }

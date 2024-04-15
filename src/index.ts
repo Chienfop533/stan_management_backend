@@ -40,7 +40,7 @@ app.use(checkToken)
 //Route
 app.use('/auth', authRouter)
 app.use('/scrumboard', scrumboardRouter)
-app.use('/scrumboardDetail', scrumboardDetailRouter)
+app.use('/scrumboard-detail', scrumboardDetailRouter)
 
 app.get('/', (req, res) => {
   res.send('Stan Management backend!')

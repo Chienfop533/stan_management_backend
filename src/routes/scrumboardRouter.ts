@@ -1,4 +1,4 @@
-import scrumboardController from '@/controllers/scrumboardController'
+import { scrumboardController } from '@/controllers'
 import express from 'express'
 import { body } from 'express-validator'
 

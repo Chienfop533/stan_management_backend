@@ -1,4 +1,4 @@
-import ScrumboardModel from '@/models/ScrumboardModel'
+import { ScrumboardModel } from '@/models'
 import { ScrumboardTypeReq } from '@/types/scrumboardType'
 import mongoose from 'mongoose'
 

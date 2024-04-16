@@ -10,7 +10,6 @@ router.post(
   body('listId').isLength({ min: 10 }),
   scrumboardDetailController.addCard
 )
-// router.put('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)
-// router.delete('/:id/delete-list/:listId', scrumboardController.deleteScrumboardList)
+router.delete('/delete-card/:cardId', scrumboardDetailController.deleteCard)
 
 export default router

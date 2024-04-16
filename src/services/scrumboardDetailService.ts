@@ -16,4 +16,12 @@ const addCard = async (scrumboardId: string, scrumboardCard: { listId: string; t
   )
   return newCard
 }
-export default { addCard, getCardsByScrumboardId }
+const deleteCard = async (cardId: string) => {
+  const deletedCard = await ScrumboardDetailModel.findByIdAndDelete(cardId)
+  await ScrumboardModel.findOneAndUpdate(
+    { _id: deletedCard?.scrumboardId, 'list._id': deletedCard?.listId },
+    { $pull: { 'list.$.cardOrderIds': cardId } }
+  )
+  return deletedCard
+}
+export default { addCard, getCardsByScrumboardId, deleteCard }

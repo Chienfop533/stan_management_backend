@@ -28,6 +28,13 @@ router.put(
   body('listOrderIds').isLength({ min: 2 }),
   scrumboardController.updateScrumboardListOrder
 )
+router.put(
+  '/:id/update-card-order',
+  body('listSource').isObject(),
+  body('sourceIndex').isInt(),
+  body('destinationIndex').isInt(),
+  scrumboardController.updateScrumboardCardOrder
+)
 router.delete('/:id/delete', scrumboardController.deleteScrumboard)
 router.post('/:id/add-list', body('title').isLength({ min: 1 }), scrumboardController.addScrumboardList)
 router.put('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)

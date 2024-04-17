@@ -1,5 +1,5 @@
 import { ScrumboardModel } from '@/models'
-import { ScrumboardTypeReq } from '@/types/scrumboardType'
+import { BoardListType, ScrumboardTypeReq } from '@/types/scrumboardType'
 import mongoose from 'mongoose'
 
 const getAllScrumboard = async () => {
@@ -68,6 +68,14 @@ const updateScrumboardListOrder = async (scrumboardId: string, scrumboardList: {
   )
   return updatedScrumboardList
 }
+const updateScrumboardCardOrder = async (scrumboardId: string, updatedList: BoardListType[]) => {
+  const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    { $set: { list: updatedList } },
+    { new: true }
+  )
+  return updatedScrumboardList
+}
 export default {
   createScrumboard,
   deleteScrumboard,
@@ -78,5 +86,6 @@ export default {
   updateScrumboardList,
   deleteScrumboardList,
   updateScrumboardListOrder,
-  getScrumboardById
+  getScrumboardById,
+  updateScrumboardCardOrder
 }

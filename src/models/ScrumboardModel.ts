@@ -26,7 +26,7 @@ export default mongoose.model(
       ],
       list: [
         {
-          id: Schema.Types.ObjectId,
+          _id: Schema.Types.ObjectId,
           title: { type: String, required: true },
           cardOrderIds: [
             {

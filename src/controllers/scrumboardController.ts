@@ -1,7 +1,8 @@
+import { BoardListType } from './../types/scrumboardType'
 import { validationResult } from 'express-validator'
 import { Request, Response } from 'express'
-import { scrumboardService } from '@/services'
-import { ScrumboardTypeReq } from '@/types/scrumboardType'
+import { scrumboardDetailService, scrumboardService } from '@/services'
+import { OrderedCardType, ScrumboardTypeReq } from '@/types/scrumboardType'
 import { attachStatusCheckCookies, checkStatusByDate } from '@/utils/checkStatus'
 import moment from 'moment'
 
@@ -158,6 +159,53 @@ const updateScrumboardListOrder = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
+const updateScrumboardCardOrder = async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  try {
+    const orderedCard = req.body as OrderedCardType
+    const scrumboardId = req.params.id
+    const scrumboardActive = await scrumboardService.getScrumboardById(scrumboardId)
+    if (scrumboardActive) {
+      let updatedList: BoardListType[]
+      if (orderedCard.listDestination) {
+        let reOrderedSource: string[] = [...orderedCard.listSource.cardOrderIds]
+        const [cardId] = reOrderedSource.splice(orderedCard.sourceIndex, 1)
+        reOrderedSource = reOrderedSource.filter((item) => item != cardId)
+        const reOrderedDestination: string[] = [...orderedCard.listDestination.cardOrderIds]
+        reOrderedDestination.splice(orderedCard.destinationIndex, 0, cardId)
+        updatedList = scrumboardActive.list.map((item: any) => {
+          if (item._id == orderedCard.listSource._id) {
+            item.cardOrderIds = reOrderedSource
+          }
+          if (item._id == orderedCard.listDestination?._id) {
+            item.cardOrderIds = reOrderedDestination
+          }
+          return item
+        })
+        await scrumboardDetailService.updateCardByListId(cardId, orderedCard.listDestination._id)
+      } else {
+        const reOrderedCardIds: string[] = [...orderedCard.listSource.cardOrderIds]
+        const [removedCardId] = reOrderedCardIds.splice(orderedCard.sourceIndex, 1)
+        reOrderedCardIds.splice(orderedCard.destinationIndex, 0, removedCardId)
+        updatedList = scrumboardActive.list.map((item: any) => {
+          if (item._id == orderedCard.listSource._id) {
+            item.cardOrderIds = reOrderedCardIds
+          }
+          return item
+        })
+      }
+      const scrumboard = await scrumboardService.updateScrumboardCardOrder(scrumboardId, updatedList)
+      res.status(200).json({ success: true, message: 'Update card order successfully', data: scrumboard })
+    } else {
+      res.status(400).json({ success: false, message: 'Not found active scrumboard' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
 
 export default {
   createScrumboard,
@@ -168,5 +216,6 @@ export default {
   updateScrumboardList,
   deleteScrumboardList,
   updateScrumboardListOrder,
-  getScrumboardById
+  getScrumboardById,
+  updateScrumboardCardOrder
 }

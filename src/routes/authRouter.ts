@@ -37,7 +37,25 @@ router.get(
     failureRedirect: `${process.env.CLIENT_URL}/login`
   }),
   function (req, res) {
-    authPassport.handleDataGoogle(req.user, res)
+    authPassport.handleDataPassport(req.user, res)
+    res.redirect(`${process.env.CLIENT_URL}`)
+  }
+)
+
+router.get(
+  '/github',
+  passport.authenticate('github', {
+    scope: ['user:email'],
+    prompt: 'consent'
+  })
+)
+router.get(
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: `${process.env.CLIENT_URL}/login`
+  }),
+  function (req, res) {
+    authPassport.handleDataPassport(req.user, res)
     res.redirect(`${process.env.CLIENT_URL}`)
   }
 )

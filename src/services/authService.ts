@@ -25,17 +25,37 @@ const register = async ({ avatar, fullName, email, password }: RegisterReq) => {
   const newUser = await UserModel.create({ avatar, fullName, email, password: hashPassword })
   return { ...newUser.toObject(), password: 'hide' }
 }
-const createUserPassport = async (profile: Profile) => {
-  const existingUser = await UserModel.findOne({ googleId: profile.id }).exec()
+const createUserPassport = async (profile: Profile, type: string) => {
+  const existingUser = await UserModel.findOne({ email: (profile.emails as any)[0].value }).exec()
+
   if (existingUser) {
-    return existingUser
+    const updateExistingUser = existingUser
+    if (!existingUser.googleId && type == 'google') {
+      await UserModel.updateOne({ _id: existingUser._id }, { $set: { googleId: profile.id } })
+      updateExistingUser.googleId = profile.id
+    }
+    if (!existingUser.githubId && type == 'github') {
+      await UserModel.updateOne({ _id: existingUser._id }, { $set: { githubId: profile.id } })
+      updateExistingUser.githubId = profile.id
+    }
+    return updateExistingUser
   } else {
-    const newUser = await UserModel.create({
-      avatar: (profile.photos as any)[0].value,
-      fullName: profile.displayName,
-      email: (profile.emails as any)[0].value,
-      googleId: profile.id
-    })
+    let newUser = null
+    if (type == 'google') {
+      newUser = await UserModel.create({
+        avatar: (profile.photos as any)[0].value,
+        fullName: profile.displayName,
+        email: (profile.emails as any)[0].value,
+        googleId: profile.id
+      })
+    } else {
+      newUser = await UserModel.create({
+        avatar: (profile.photos as any)[0].value,
+        fullName: profile.displayName,
+        email: (profile.emails as any)[0].value,
+        githubId: profile.id
+      })
+    }
     return newUser
   }
 }

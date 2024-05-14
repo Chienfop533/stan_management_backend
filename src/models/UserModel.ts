@@ -14,7 +14,8 @@ export default mongoose.model(
         validate: { validator: (value: string) => validator.isEmail(value), message: 'Email is incorrect format' }
       },
       password: String,
-      googleId: String
+      googleId: String,
+      githubId: String
     },
     { timestamps: true }
   )

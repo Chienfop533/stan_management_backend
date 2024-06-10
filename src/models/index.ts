@@ -1,4 +1,6 @@
-import ScrumboardDetailModel from './ScrumboardDetailModel'
-import ScrumboardModel from './ScrumboardModel'
-import UserModel from './UserModel'
-export { UserModel, ScrumboardModel, ScrumboardDetailModel }
+import BoardListModel from './scrumboard/BoardListModel'
+import BoardCardModel from './scrumboard/BoardCardModel'
+import ScrumboardModel from './scrumboard/ScrumboardModel'
+import UserModel from './user/UserModel'
+
+export { UserModel, ScrumboardModel, BoardListModel, BoardCardModel }

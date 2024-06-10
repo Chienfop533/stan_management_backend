@@ -1,5 +1,5 @@
-import authController from './authController'
-import authPassport from './authPassport'
-import scrumboardController from './scrumboardController'
-import scrumboardDetailController from './scrumboardDetailController'
-export { authController, authPassport, scrumboardController, scrumboardDetailController }
+import authController from './auth/authController'
+import authPassport from './auth/authPassport'
+import scrumboardController from './scrumboard/scrumboardController'
+import boardListController from './scrumboard/boardListController'
+export { authController, authPassport, scrumboardController, boardListController }

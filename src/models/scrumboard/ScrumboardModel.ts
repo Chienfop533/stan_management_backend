@@ -23,17 +23,6 @@ export default mongoose.model(
         {
           type: Schema.Types.ObjectId
         }
-      ],
-      list: [
-        {
-          _id: Schema.Types.ObjectId,
-          title: { type: String, required: true },
-          cardOrderIds: [
-            {
-              type: Schema.Types.ObjectId
-            }
-          ]
-        }
       ]
     },
     { timestamps: true }

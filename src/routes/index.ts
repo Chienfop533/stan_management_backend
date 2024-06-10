@@ -1,4 +1,5 @@
-import authRouter from './authRouter'
-import scrumboardDetailRouter from './scrumboardDetailRouter'
-import scrumboardRouter from './scrumboardRouter'
-export { authRouter, scrumboardRouter, scrumboardDetailRouter }
+import authRouter from './auth/authRouter'
+import BoardCardRouter from './scrumboard/BoardCardRouter'
+import BoardListRouter from './scrumboard/BoardListRouter'
+import scrumboardRouter from './scrumboard/scrumboardRouter'
+export { authRouter, scrumboardRouter, BoardListRouter, BoardCardRouter }

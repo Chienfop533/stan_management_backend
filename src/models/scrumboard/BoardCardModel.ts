@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 
 export default mongoose.model(
-  'ScrumboardDetail',
+  'BoardCard',
   new Schema(
     {
       scrumboardId: { type: Schema.Types.ObjectId, required: true },

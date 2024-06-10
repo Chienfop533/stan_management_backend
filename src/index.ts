@@ -4,7 +4,7 @@ dotenv.config()
 
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
-import { authRouter, scrumboardDetailRouter, scrumboardRouter } from './routes'
+import { authRouter, BoardCardRouter, BoardListRouter, scrumboardRouter } from './routes'
 import connect from './db/db'
 import checkToken from './middleware/authentication'
 import cors from 'cors'
@@ -40,7 +40,8 @@ app.use(checkToken)
 //Route
 app.use('/auth', authRouter)
 app.use('/scrumboard', scrumboardRouter)
-app.use('/scrumboard-detail', scrumboardDetailRouter)
+app.use('/board-list', BoardListRouter)
+app.use('board-card', BoardCardRouter)
 
 app.get('/', (req, res) => {
   res.send('Stan Management backend!')

@@ -1,5 +1,5 @@
 import { ScrumboardModel } from '@/models'
-import { BoardListType, ScrumboardTypeReq } from '@/types/scrumboardType'
+import { BoardListType, ScrumboardType } from '@/types/scrumboardType'
 import mongoose from 'mongoose'
 
 const getAllScrumboard = async () => {
@@ -14,12 +14,12 @@ const getScrumboardFilter = async (filter: any) => {
   const listScrumboard = await ScrumboardModel.find(filter)
   return listScrumboard
 }
-const createScrumboard = async (scrumboard: ScrumboardTypeReq) => {
-  const newScrumboard = await ScrumboardModel.create({ ...scrumboard, listOrderIds: [], list: [] })
+const createScrumboard = async (scrumboard: ScrumboardType) => {
+  const newScrumboard = await ScrumboardModel.create({ ...scrumboard, listOrderIds: [] })
   return newScrumboard
 }
 
-const updateScrumboard = async (id: string, scrumboard: ScrumboardTypeReq) => {
+const updateScrumboard = async (id: string, scrumboard: ScrumboardType) => {
   const updatedScrumboard = await ScrumboardModel.findByIdAndUpdate(id, scrumboard, { new: true })
   return updatedScrumboard
 }

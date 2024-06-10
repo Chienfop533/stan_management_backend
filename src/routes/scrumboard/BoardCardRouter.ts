@@ -1,19 +1,29 @@
-import { boardListController } from '@/controllers'
+import { boardCardController } from '@/controllers'
 import express from 'express'
 import { body } from 'express-validator'
 
 const router = express.Router()
-router.get('/', boardListController.getAllList)
-router.get('/:id', boardListController.getListById)
-router.post('/', body('title').isLength({ min: 1 }), body('scrumboardId').isMongoId(), boardListController.addList)
+router.get('/', boardCardController.getAllCard)
+router.get('/:id', boardCardController.getCardById)
+router.post(
+  '/',
+  body('title').isLength({ min: 4 }),
+  body('scrumboardId').isMongoId(),
+  body('listId').isMongoId(),
+  boardCardController.addCard
+)
 router.put(
   '/:id',
   body('_id').isMongoId(),
   body('scrumboardId').isMongoId(),
-  body('title').isLength({ min: 1 }),
-  body('amount').toInt().isInt({ min: 0 }),
-  body('cardOrderIds').isArray(),
-  boardListController.updateList
+  body('listId').isMongoId(),
+  body('title').isLength({ min: 4 }),
+  body('memberIds').isArray(),
+  body('labels').isArray(),
+  body('attachments').isArray(),
+  body('todo').isArray(),
+  body('comments').isArray(),
+  boardCardController.updateCard
 )
 
 export default router

@@ -9,6 +9,10 @@ const getListById = async (id: string) => {
   const listDetail = await BoardListModel.findById(id)
   return listDetail
 }
+const getListsByScrumboardId = async (scrumboardId: string) => {
+  const boardLists = await BoardListModel.find({ scrumboardId: scrumboardId })
+  return boardLists
+}
 const addList = async (list: BoardListType) => {
   const newList = await BoardListModel.create({ ...list, amount: 0, cardOrderIds: [] })
   await ScrumboardModel.findByIdAndUpdate(list.scrumboardId, {
@@ -65,5 +69,6 @@ export default {
   getListById,
   addList,
   updateList,
-  deleteList
+  deleteList,
+  getListsByScrumboardId
 }

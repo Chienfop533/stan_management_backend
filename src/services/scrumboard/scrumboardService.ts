@@ -1,6 +1,5 @@
 import { BoardCardModel, BoardListModel, ScrumboardModel } from '@/models'
-import { BoardListType, ScrumboardType } from '@/types/scrumboardType'
-import mongoose from 'mongoose'
+import { ScrumboardType } from '@/types/scrumboardType'
 
 const getAllScrumboard = async () => {
   const listScrumboard = await ScrumboardModel.find()

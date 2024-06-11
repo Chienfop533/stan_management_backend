@@ -1,11 +1,11 @@
-import { BoardListType } from '../../types/scrumboardType'
 import { validationResult } from 'express-validator'
 import { Request, Response } from 'express'
 import { boardListService, scrumboardService } from '@/services'
-import { OrderedCardType, ScrumboardType } from '@/types/scrumboardType'
+import { ScrumboardType } from '@/types/scrumboardType'
 import { attachStatusCheckCookies, checkStatusByDate } from '@/utils/checkStatus'
 import moment from 'moment'
 import mongoose from 'mongoose'
+import boardCardService from '@/services/scrumboard/boardCardService'
 
 const getAllScrumboard = async (req: Request, res: Response) => {
   try {
@@ -50,7 +50,15 @@ const getScrumboardById = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(scrumboardId)) {
       return res.status(400).json({ success: false, message: 'ScrumboardId not format ObjectId' })
     }
-    const scrumboardDetail = await scrumboardService.getScrumboardById(scrumboardId)
+    let scrumboardDetail: any = await scrumboardService.getScrumboardById(scrumboardId)
+    const lists = await boardListService.getListsByScrumboardId(scrumboardId)
+    const cards = await boardCardService.getCardsByScrumboardId(scrumboardId)
+    scrumboardDetail = { ...scrumboardDetail, list: lists }
+    scrumboardDetail.list = scrumboardDetail.list?.map((listItem: any) => {
+      const cardsByListId = cards.filter((item) => item.listId == listItem._id)
+      return { ...listItem, card: cardsByListId }
+    })
+
     res.status(200).json({ success: true, message: 'Get scrumboard detail successfully', data: scrumboardDetail })
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.toString() })

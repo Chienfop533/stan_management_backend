@@ -2,7 +2,7 @@ import { validationResult } from 'express-validator'
 import { Request, Response } from 'express'
 import { boardListService } from '@/services'
 import mongoose from 'mongoose'
-import { BoardListType, ScrumboardType } from '@/types/scrumboardType'
+import { BoardListType } from '@/types/scrumboardType'
 
 const getAllList = async (req: Request, res: Response) => {
   try {

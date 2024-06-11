@@ -55,6 +55,19 @@ const updateCard = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
+const deleteCard = async (req: Request, res: Response) => {
+  try {
+    const cardId = req.params.id
+    const card = await boardCardService.deleteCard(cardId)
+    if (card) {
+      res.status(200).json({ success: true, message: 'Delete card successfully', data: card })
+    } else {
+      res.status(400).json({ success: false, message: 'CardId not match' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
 // const getCardsByScrumboardId = async (req: Request, res: Response) => {
 //   try {
 //     const errors = validationResult(req)
@@ -95,4 +108,4 @@ const updateCard = async (req: Request, res: Response) => {
 //     res.status(500).json({ success: false, message: error.toString() })
 //   }
 // }
-export default { addCard, getAllCard, getCardById, updateCard }
+export default { addCard, getAllCard, getCardById, updateCard, deleteCard }

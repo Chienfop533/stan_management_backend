@@ -25,5 +25,5 @@ router.put(
   body('comments').isArray(),
   boardCardController.updateCard
 )
-
+router.delete('/:id', boardCardController.deleteCard)
 export default router

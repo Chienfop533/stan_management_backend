@@ -15,6 +15,7 @@ router.put(
   body('cardOrderIds').isArray(),
   boardListController.updateList
 )
+router.delete('/:id', boardListController.deleteList)
 // router.get('/:scrumboardId/list-card', scrumboardDetailController.getCardsByScrumboardId)
 // router.post(
 //   '/:scrumboardId/add-card',

@@ -24,6 +24,8 @@ router.put(
   body('listOrderIds').isArray(),
   scrumboardController.updateScrumboard
 )
+router.delete('/:id', scrumboardController.deleteScrumboard)
+
 // router.put(
 //   '/:id/update-list-order',
 //   body('listOrderIds').isLength({ min: 2 }),
@@ -36,7 +38,7 @@ router.put(
 //   body('destinationIndex').isInt(),
 //   scrumboardController.updateScrumboardCardOrder
 // )
-// router.delete('/:id/delete', scrumboardController.deleteScrumboard)
+
 // router.post('/:id/add-list', body('title').isLength({ min: 1 }), scrumboardController.addScrumboardList)
 // router.put('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)
 // router.delete('/:id/delete-list/:listId', scrumboardController.deleteScrumboardList)

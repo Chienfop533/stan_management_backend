@@ -11,12 +11,24 @@ const getListById = async (id: string) => {
 }
 const addList = async (list: BoardListType) => {
   const newList = await BoardListModel.create({ ...list, amount: 0, cardOrderIds: [] })
+  await ScrumboardModel.findByIdAndUpdate(list.scrumboardId, {
+    $push: {
+      listOrderIds: newList._id
+    }
+  })
   return newList
 }
 
 const updateList = async (id: string, list: BoardListType) => {
   const updatedList = await BoardListModel.findByIdAndUpdate(id, list, { new: true })
   return updatedList
+}
+const deleteList = async (id: string) => {
+  const list = await BoardListModel.findByIdAndDelete(id)
+  await ScrumboardModel.findByIdAndUpdate(list?.scrumboardId, {
+    $pull: { listOrderIds: id }
+  })
+  return list
 }
 
 // const getCardsByScrumboardId = async (scrumboardId: string) => {
@@ -52,5 +64,6 @@ export default {
   getAllList,
   getListById,
   addList,
-  updateList
+  updateList,
+  deleteList
 }

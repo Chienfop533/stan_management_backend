@@ -1,4 +1,4 @@
-import { ScrumboardModel } from '@/models'
+import { BoardCardModel, BoardListModel, ScrumboardModel } from '@/models'
 import { BoardListType, ScrumboardType } from '@/types/scrumboardType'
 import mongoose from 'mongoose'
 
@@ -23,10 +23,12 @@ const updateScrumboard = async (id: string, scrumboard: ScrumboardType) => {
   const updatedScrumboard = await ScrumboardModel.findByIdAndUpdate(id, scrumboard, { new: true })
   return updatedScrumboard
 }
-// const deleteScrumboard = async (id: string) => {
-//   const scrumboard = await ScrumboardModel.findByIdAndDelete(id)
-//   return scrumboard
-// }
+const deleteScrumboard = async (id: string) => {
+  const scrumboard = await ScrumboardModel.findByIdAndDelete(id)
+  await BoardListModel.deleteMany({ scrumboardId: id })
+  await BoardCardModel.deleteMany({ scrumboardId: id })
+  return scrumboard
+}
 
 // const addScrumboardList = async (scrumboardId: string, scrumboardList: { title: string }) => {
 //   const newObjectId = new mongoose.Types.ObjectId()
@@ -81,5 +83,6 @@ export default {
   updateScrumboard,
   getAllScrumboard,
   getScrumboardFilter,
-  getScrumboardById
+  getScrumboardById,
+  deleteScrumboard
 }

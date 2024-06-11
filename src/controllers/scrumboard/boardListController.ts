@@ -55,6 +55,19 @@ const updateList = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
+const deleteList = async (req: Request, res: Response) => {
+  try {
+    const listId = req.params.id
+    const list = await boardListService.deleteList(listId)
+    if (list) {
+      res.status(200).json({ success: true, message: 'Delete list successfully', data: list })
+    } else {
+      res.status(400).json({ success: false, message: 'ListId not match' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
 // const getCardsByScrumboardId = async (req: Request, res: Response) => {
 //   try {
 //     const errors = validationResult(req)
@@ -95,4 +108,4 @@ const updateList = async (req: Request, res: Response) => {
 //     res.status(500).json({ success: false, message: error.toString() })
 //   }
 // }
-export default { getAllList, getListById, addList, updateList }
+export default { getAllList, getListById, addList, updateList, deleteList }

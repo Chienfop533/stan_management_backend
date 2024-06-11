@@ -91,19 +91,20 @@ const updateScrumboard = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
-// const deleteScrumboard = async (req: Request, res: Response) => {
-//   try {
-//     const scrumboardId = req.params.id
-//     const scrumboard = await scrumboardService.deleteScrumboard(scrumboardId)
-//     if (scrumboard) {
-//       res.status(200).json({ success: true, message: 'Delete scrumboard successfully', data: scrumboard })
-//     } else {
-//       res.status(400).json({ success: false, message: 'ScrumboardId not match' })
-//     }
-//   } catch (error: any) {
-//     res.status(500).json({ success: false, message: error.toString() })
-//   }
-// }
+const deleteScrumboard = async (req: Request, res: Response) => {
+  try {
+    const scrumboardId = req.params.id
+    const scrumboard = await scrumboardService.deleteScrumboard(scrumboardId)
+    if (scrumboard) {
+      res.status(200).json({ success: true, message: 'Delete scrumboard successfully', data: scrumboard })
+    } else {
+      res.status(400).json({ success: false, message: 'ScrumboardId not match' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.toString() })
+  }
+}
+
 // const addScrumboardList = async (req: Request, res: Response) => {
 //   const errors = validationResult(req)
 //   if (!errors.isEmpty()) {
@@ -213,5 +214,6 @@ export default {
   createScrumboard,
   updateScrumboard,
   getAllScrumboard,
-  getScrumboardById
+  getScrumboardById,
+  deleteScrumboard
 }

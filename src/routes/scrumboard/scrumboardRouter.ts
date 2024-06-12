@@ -8,7 +8,7 @@ router.get('/:id', scrumboardController.getScrumboardById)
 router.post(
   '/',
   body('image').notEmpty(),
-  body('title').isLength({ min: 4 }),
+  body('title').isLength({ min: 3 }),
   body('startDate').isISO8601().toDate(),
   body('type').isIn(['public', 'private']),
   scrumboardController.createScrumboard
@@ -17,7 +17,7 @@ router.put(
   '/:id',
   body('_id').isMongoId(),
   body('image').notEmpty(),
-  body('title').isLength({ min: 4 }),
+  body('title').isLength({ min: 3 }),
   body('startDate').isISO8601().toDate(),
   body('status').isIn(['init', 'complete', 'late', 'pause', 'active']),
   body('type').isIn(['public', 'private']),

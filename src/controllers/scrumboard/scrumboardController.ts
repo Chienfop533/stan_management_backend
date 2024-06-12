@@ -50,14 +50,7 @@ const getScrumboardById = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(scrumboardId)) {
       return res.status(400).json({ success: false, message: 'ScrumboardId not format ObjectId' })
     }
-    let scrumboardDetail: any = await scrumboardService.getScrumboardById(scrumboardId)
-    const lists = await boardListService.getListsByScrumboardId(scrumboardId)
-    const cards = await boardCardService.getCardsByScrumboardId(scrumboardId)
-    scrumboardDetail = { ...scrumboardDetail, list: lists }
-    scrumboardDetail.list = scrumboardDetail.list?.map((listItem: any) => {
-      const cardsByListId = cards.filter((item) => item.listId == listItem._id)
-      return { ...listItem, card: cardsByListId }
-    })
+    const scrumboardDetail: any = await scrumboardService.getScrumboardById(scrumboardId)
 
     res.status(200).json({ success: true, message: 'Get scrumboard detail successfully', data: scrumboardDetail })
   } catch (error: any) {

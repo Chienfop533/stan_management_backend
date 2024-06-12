@@ -1,12 +1,38 @@
 import { BoardCardModel, BoardListModel, ScrumboardModel } from '@/models'
 import { ScrumboardType } from '@/types/scrumboardType'
+import mongoose from 'mongoose'
 
 const getAllScrumboard = async () => {
   const listScrumboard = await ScrumboardModel.find()
   return listScrumboard
 }
 const getScrumboardById = async (id: string) => {
-  const scrumboardDetail = await ScrumboardModel.findById(id)
+  const scrumboardId = new mongoose.Types.ObjectId(id)
+  const scrumboardDetail = await ScrumboardModel.aggregate([
+    {
+      $match: {
+        _id: scrumboardId
+      }
+    },
+    {
+      $lookup: {
+        from: 'boardlists',
+        localField: '_id',
+        foreignField: 'scrumboardId',
+        as: 'list',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'boardcards',
+              localField: '_id',
+              foreignField: 'listId',
+              as: 'card'
+            }
+          }
+        ]
+      }
+    }
+  ])
   return scrumboardDetail
 }
 const getScrumboardFilter = async (filter: any) => {

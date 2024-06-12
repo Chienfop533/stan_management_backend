@@ -9,10 +9,7 @@ const getCardById = async (id: string) => {
   const cardDetail = await BoardCardModel.findById(id)
   return cardDetail
 }
-const getCardsByScrumboardId = async (scrumboardId: string) => {
-  const boardCards = await BoardCardModel.find({ scrumboardId: scrumboardId })
-  return boardCards
-}
+
 const addCard = async (card: BoardCardType) => {
   const newCard = await BoardCardModel.create(card)
   await BoardListModel.findByIdAndUpdate(card.listId, {
@@ -40,6 +37,5 @@ export default {
   getCardById,
   addCard,
   updateCard,
-  deleteCard,
-  getCardsByScrumboardId
+  deleteCard
 }

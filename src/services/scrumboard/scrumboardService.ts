@@ -19,21 +19,21 @@ const getScrumboardById = async (id: string) => {
         from: 'boardlists',
         localField: '_id',
         foreignField: 'scrumboardId',
-        as: 'list',
+        as: 'lists',
         pipeline: [
           {
             $lookup: {
               from: 'boardcards',
               localField: '_id',
               foreignField: 'listId',
-              as: 'card'
+              as: 'cards'
             }
           }
         ]
       }
     }
   ])
-  return scrumboardDetail
+  return scrumboardDetail[0] ?? null
 }
 const getScrumboardFilter = async (filter: any) => {
   const listScrumboard = await ScrumboardModel.find(filter)
@@ -55,59 +55,42 @@ const deleteScrumboard = async (id: string) => {
   return scrumboard
 }
 
-// const addScrumboardList = async (scrumboardId: string, scrumboardList: { title: string }) => {
-//   const newObjectId = new mongoose.Types.ObjectId()
-//   const newScrumboardList = await ScrumboardModel.findByIdAndUpdate(
-//     scrumboardId,
-//     {
-//       $push: {
-//         listOrderIds: newObjectId,
-//         list: { _id: newObjectId, title: scrumboardList.title, cardOrderIds: [] }
-//       }
-//     },
-//     {
-//       new: true
-//     }
-//   )
-//   return newScrumboardList
-// }
-// const updateScrumboardList = async (scrumboardId: string, listId: string, scrumboardList: { title: string }) => {
-//   const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
-//     scrumboardId,
-//     { $set: { 'list.$[element].title': scrumboardList.title } },
-//     { new: true, arrayFilters: [{ 'element._id': listId }] }
-//   )
-//   return updatedScrumboardList
-// }
-// const deleteScrumboardList = async (scrumboardId: string, listId: string) => {
-//   const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
-//     scrumboardId,
-//     { $pull: { listOrderIds: listId, list: { _id: listId } } },
-//     { new: true }
-//   )
-//   return updatedScrumboardList
-// }
-// const updateScrumboardListOrder = async (scrumboardId: string, scrumboardList: { listOrderIds: string[] }) => {
-//   const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
-//     scrumboardId,
-//     { $set: { listOrderIds: scrumboardList.listOrderIds } },
-//     { new: true }
-//   )
-//   return updatedScrumboardList
-// }
-// const updateScrumboardCardOrder = async (scrumboardId: string, updatedList: BoardListType[]) => {
-//   const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
-//     scrumboardId,
-//     { $set: { list: updatedList } },
-//     { new: true }
-//   )
-//   return updatedScrumboardList
-// }
+const updateScrumboardListOrder = async (scrumboardId: string, scrumboardList: { listOrderIds: string[] }) => {
+  const updatedScrumboardList = await ScrumboardModel.findByIdAndUpdate(
+    scrumboardId,
+    { $set: { listOrderIds: scrumboardList.listOrderIds } },
+    { new: true }
+  )
+  return updatedScrumboardList
+}
+const updateCardOrderInList = async (listId: string, orderedCard: string[]) => {
+  const updatedList = await BoardListModel.findByIdAndUpdate(listId, { $set: { cardOrderIds: orderedCard } })
+  return updatedList
+}
+const updateCardOrderDifferentList = async (
+  sourceId: string,
+  sourceCardOrder: string[],
+  destinationId: string,
+  destinationOrder: string[],
+  cardId: string
+) => {
+  await BoardListModel.findByIdAndUpdate(sourceId, { $set: { cardOrderIds: sourceCardOrder } })
+  await BoardListModel.findByIdAndUpdate(destinationId, {
+    $set: { cardOrderIds: destinationOrder }
+  })
+
+  const updatedCard = await BoardCardModel.findByIdAndUpdate(cardId, { $set: { listId: destinationId } })
+  return updatedCard
+}
+
 export default {
   createScrumboard,
   updateScrumboard,
   getAllScrumboard,
   getScrumboardFilter,
   getScrumboardById,
-  deleteScrumboard
+  deleteScrumboard,
+  updateScrumboardListOrder,
+  updateCardOrderInList,
+  updateCardOrderDifferentList
 }

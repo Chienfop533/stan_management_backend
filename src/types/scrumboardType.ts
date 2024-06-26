@@ -32,8 +32,8 @@ export interface BoardCardType {
 }
 
 export interface OrderedCardType {
-  listSource: BoardListType
+  listSourceId: string
   sourceIndex: number
-  listDestination?: BoardListType
+  listDestinationId?: string
   destinationIndex: number
 }

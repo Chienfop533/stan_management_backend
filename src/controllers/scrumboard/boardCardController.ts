@@ -68,44 +68,5 @@ const deleteCard = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: error.toString() })
   }
 }
-// const getCardsByScrumboardId = async (req: Request, res: Response) => {
-//   try {
-//     const errors = validationResult(req)
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() })
-//     }
-//     const scrumboardId = req.params.scrumboardId
-//     const listCard = await boardListService.getCardsByScrumboardId(scrumboardId)
-//     res.status(200).json({ success: true, message: 'Get list card by scrumboard successfully', data: listCard })
-//   } catch (error: any) {
-//     res.status(500).json({ success: false, message: error.toString() })
-//   }
-// }
-// const addCard = async (req: Request, res: Response) => {
-//   const errors = validationResult(req)
-//   if (!errors.isEmpty()) {
-//     return res.status(400).json({ errors: errors.array() })
-//   }
-//   try {
-//     const cardReq = req.body
-//     const scrumboardId = req.params.scrumboardId
-//     const card = await boardListService.addCard(scrumboardId, cardReq)
-//     res.status(201).json({ success: true, message: 'Add new card successfully', data: card })
-//   } catch (error: any) {
-//     res.status(500).json({ success: false, message: error.toString() })
-//   }
-// }
-// const deleteCard = async (req: Request, res: Response) => {
-//   const errors = validationResult(req)
-//   if (!errors.isEmpty()) {
-//     return res.status(400).json({ errors: errors.array() })
-//   }
-//   try {
-//     const cardId = req.params.cardId
-//     const card = await boardListService.deleteCard(cardId)
-//     res.status(200).json({ success: true, message: 'Delete card successfully', data: card })
-//   } catch (error: any) {
-//     res.status(500).json({ success: false, message: error.toString() })
-//   }
-// }
+
 export default { addCard, getAllCard, getCardById, updateCard, deleteCard }

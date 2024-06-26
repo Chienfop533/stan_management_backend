@@ -8,7 +8,7 @@ router.get('/:id', scrumboardController.getScrumboardById)
 router.post(
   '/',
   body('image').notEmpty(),
-  body('title').isLength({ min: 3 }),
+  body('title').isLength({ min: 4 }),
   body('startDate').isISO8601().toDate(),
   body('type').isIn(['public', 'private']),
   scrumboardController.createScrumboard
@@ -17,7 +17,7 @@ router.put(
   '/:id',
   body('_id').isMongoId(),
   body('image').notEmpty(),
-  body('title').isLength({ min: 3 }),
+  body('title').isLength({ min: 4 }),
   body('startDate').isISO8601().toDate(),
   body('status').isIn(['init', 'complete', 'late', 'pause', 'active']),
   body('type').isIn(['public', 'private']),
@@ -26,21 +26,18 @@ router.put(
 )
 router.delete('/:id', scrumboardController.deleteScrumboard)
 
-// router.put(
-//   '/:id/update-list-order',
-//   body('listOrderIds').isLength({ min: 2 }),
-//   scrumboardController.updateScrumboardListOrder
-// )
-// router.put(
-//   '/:id/update-card-order',
-//   body('listSource').isObject(),
-//   body('sourceIndex').isInt(),
-//   body('destinationIndex').isInt(),
-//   scrumboardController.updateScrumboardCardOrder
-// )
+router.put(
+  '/:id/update-list-order',
+  body('listOrderIds').isLength({ min: 2 }),
+  scrumboardController.updateScrumboardListOrder
+)
 
-// router.post('/:id/add-list', body('title').isLength({ min: 1 }), scrumboardController.addScrumboardList)
-// router.put('/:id/update-list/:listId', body('title').isLength({ min: 1 }), scrumboardController.updateScrumboardList)
-// router.delete('/:id/delete-list/:listId', scrumboardController.deleteScrumboardList)
+router.put(
+  '/:id/update-card-order',
+  body('listSourceId').isMongoId(),
+  body('sourceIndex').isInt(),
+  body('destinationIndex').isInt(),
+  scrumboardController.updateScrumboardCardOrder
+)
 
 export default router

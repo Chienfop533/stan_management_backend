@@ -7,7 +7,7 @@ router.get('/', boardCardController.getAllCard)
 router.get('/:id', boardCardController.getCardById)
 router.post(
   '/',
-  body('title').isLength({ min: 3 }),
+  body('title').isLength({ min: 1 }),
   body('scrumboardId').isMongoId(),
   body('listId').isMongoId(),
   boardCardController.addCard
@@ -17,7 +17,7 @@ router.put(
   body('_id').isMongoId(),
   body('scrumboardId').isMongoId(),
   body('listId').isMongoId(),
-  body('title').isLength({ min: 3 }),
+  body('title').isLength({ min: 1 }),
   body('memberIds').isArray(),
   body('labels').isArray(),
   body('attachments').isArray(),
